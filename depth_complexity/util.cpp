@@ -1,6 +1,7 @@
 #include "util.h"
 
 #include <iostream>
+#include <cstdio>
 #include <boost/tokenizer.hpp>
 
 const double EPS = 1.0E-5;

@@ -253,7 +253,7 @@ void DepthComplexity2D::findMaximumRaysAndHistogram() {
 
         if (_computeMaximumRays) {
           Segment seg;
-          if (val == _maximum) {
+          if (val >= 3) {
             double t1 = c/(double)_fboWidth;
             double t2 = r/(double)_fboHeight;
             seg.a = _from.a*(1.f-t1) + _from.b*t1;

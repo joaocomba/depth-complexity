@@ -1,6 +1,8 @@
 #include "flags.h"
 
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 
 const char* option(const char *const name, const int argc, const char *const *const argv,

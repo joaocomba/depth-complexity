@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstring>
 #include <GL/glew.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>

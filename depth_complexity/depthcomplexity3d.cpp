@@ -188,7 +188,7 @@ void drawMesh(const TriMesh& mesh, const vec3f& dir)
 //    }
 //    glEnd();
 //}
-
+    
 void drawRays()
 {
     const std::vector<Segment>& rays = dc3d->maximumRays();
@@ -398,6 +398,8 @@ int main(int argc, char **argv)
         std::cerr << "missing input file!" << std::endl;
         return 1;
     }
+    
+    glutInit(&argc,argv);
 
     try {
         std::ifstream file(argv[1]);

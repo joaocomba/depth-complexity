@@ -1,10 +1,13 @@
 #ifndef DC_2D2_H
 #define DC_2D2_H
 
+#define GL_GLEXT_PROTOTYPES
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
+#include <algorithm>
 #endif
 
 #include "util.h"

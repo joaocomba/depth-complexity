@@ -1,6 +1,8 @@
+#ifdef __APPLE__
 #include <GLUT/glut.h>
-//#include <GL/gl.h>
-//#include <GL/glu.h>
+#else
+#include <GL/glut.h>
+#endif
 
 #include "camera.hpp"
 

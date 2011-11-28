@@ -11,12 +11,16 @@ ifeq "$(OS)" "Darwin"
 	GLEW_CFLAGS = -I/opt/local/include
 	GLEW_LDFLAGS = -L/opt/local/lib -lGLEW
 else
-	GLUT_LDFLAGS = -lglut
+    ifeq "$(OS)" "Linux"
+	    GLUT_LDFLAGS = -lglut -lGLU
+    else
+	    GLUT_LDFLAGS = -lglut
+    endif
 	GLEW_LDFLAGS = -lGLEW
 endif
 
-#CPPFLAGS = $(GLFW_CFLAGS) $(ATB_CFLAGS) $(GLEW_CFLAGS) -Wall -Werror -O3 -g
-CPPFLAGS = $(GLFW_CFLAGS) $(ATB_CFLAGS) $(GLEW_CFLAGS) -Wall -Werror -g
+CPPFLAGS = $(GLFW_CFLAGS) $(ATB_CFLAGS) $(GLEW_CFLAGS) -Wall -Werror -O3 -g
+#CPPFLAGS = $(GLFW_CFLAGS) $(ATB_CFLAGS) $(GLEW_CFLAGS) -Wall -Werror -g
 LDFLAGS = $(ATB_LDFLAGS) $(GLEW_LDFLAGS) -Wall -Werror
 
 
