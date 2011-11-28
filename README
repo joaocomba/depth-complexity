@@ -1,0 +1,13 @@
+Tutorial GIT:
+
+ * Criar usuário em http://github.com
+ * Seguir passos de instalação em http://help.github.com/set-up-git-redirect
+ * Executar os comandos a seguir:
+  $ git clone git://github.com/bfiss/depth-complexity.git
+  $ cd depth-complexity
+  $ git remote add origin git@github.com:bfiss/depth-complexity.git
+ * Quando quiser, realize alterações, e então execute:
+  $ git add .
+  $ git commit -a -m "breve descrição das suas modificações"
+  $ git push --all origin
+  $ link para o projeto: http://github.com/bfiss/depth-complexity

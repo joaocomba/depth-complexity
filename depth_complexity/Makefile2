@@ -1,0 +1,42 @@
+OS=$(shell uname -s)
+
+GLFW_CFLAGS = $(shell pkg-config --cflags libglfw)
+GLFW_LDFLAGS = $(shell pkg-config --libs libglfw)
+
+ATB_CFLAGS = 
+ATB_LDFLAGS = -lAntTweakBar
+
+ifeq "$(OS)" "Darwin"
+	GLUT_LDFLAGS += -framework GLUT -framework OpenGL
+	GLEW_CFLAGS = -I/opt/local/include -I/usr/local/glew-1.5.6/include -I/usr/local/boost/boost_1_36_0 -I/usr/local/AntTweakBar/include
+	GLEW_LDFLAGS = -L/usr/local/lib -lGLEW
+else
+	GLUT_LDFLAGS = -lglut
+	GLEW_LDFLAGS = -lGLEW
+endif
+
+#CPPFLAGS = $(GLFW_CFLAGS) $(ATB_CFLAGS) $(GLEW_CFLAGS) -Wall -Werror -O3 -g
+CPPFLAGS = $(GLFW_CFLAGS) $(ATB_CFLAGS) $(GLEW_CFLAGS) -Wall -Werror -g
+LDFLAGS = $(ATB_LDFLAGS) $(GLEW_LDFLAGS) -Wall -Werror
+
+
+.PHONY: all clean
+
+all : main_joao depthcomplexity2d depthcomplexity3d_offline depthcomplexity3d
+
+clean:
+	rm -f *.o depthcomplexity3d depthcomplexity2d main_joao test_intersection depthcomplexity3d_offline
+
+depthcomplexity3d: depthcomplexity3d.o camera.o dc_2d.o dc_3d.o util.o timer.o
+	g++ -g -o $@ $^ $(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
+
+depthcomplexity2d: depthcomplexity2d.o dc_2d.o util.o flags.o timer.o
+	g++ -g -o $@ $^ $(LDFLAGS) $(GLUT_LDFLAGS)
+
+depthcomplexity3d_offline: \
+	depthcomplexity3d_offline.o dc_3d.o dc_2d.o flags.o util.o timer.o
+	g++ -g -o $@ $^ $(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
+
+main_joao: main_joao.o
+	g++ -g -o $@ $^ $(LDFLAGS) $(GLUT_LDFLAGS)
+
