@@ -6,8 +6,14 @@ Tutorial GIT:
   $ git clone git://github.com/bfiss/depth-complexity.git
   $ cd depth-complexity
   $ git remote add origin git@github.com:bfiss/depth-complexity.git
- * Quando quiser, realize alterações, e então execute:
-  $ git add .
+ * Para atualizar para a mais nova versão:
+  $ git pull
+ * Para adicionar um novo arquivo:
+  $ touch arquivo
+  $ git add arquivo
+ * Quando tiver realizado alterações e decidir mantê-las:
+  $ make clean
   $ git commit -a -m "breve descrição das suas modificações"
+ Para enviar as mudanças ao servidor:
   $ git push --all origin
-  $ link para o projeto: http://github.com/bfiss/depth-complexity
+ * O link para o projeto é: http://github.com/bfiss/depth-complexity
