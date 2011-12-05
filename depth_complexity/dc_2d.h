@@ -30,10 +30,11 @@ public:
 
   void setComputeHistogram(bool computeHistogram) { this->_computeHistogram = computeHistogram; }
   void setComputeMaximumRays(bool computeMaximumRays) {this->_computeMaximumRays = computeMaximumRays; }
+  void setComputeGoodRays(bool computeGoodRays) {this->_computeGoodRays = computeGoodRays; }
 
   // Compute the maximum depth complexity
   void process(
-    const Segment &from, const Segment &to, const std::vector<Segment> &segments);
+    const Segment &from, const Segment &to, const std::vector<Segment> &segments, int threshold = 0);
 
   // Copy stencil buffer to color buffer.
   // Colors are defined in a table.
@@ -43,6 +44,7 @@ public:
   int                  maximum() const   { return _maximum; }
   std::vector<int>     histogram()       { return _histogram; }
   std::vector<Segment> maximumRays()     { return _maximumRays; }
+  std::vector<CuttingSegment> goodRays() { return _goodRays; }
   GLuint               textureId() const { return _textureId; }
 
 private:
@@ -70,6 +72,7 @@ private:
   bool                          _status;
   bool                          _computeHistogram;
   bool                          _computeMaximumRays;
+  bool                          _computeGoodRays;
 
   // Inputs
   int                           _fboWidth;
@@ -77,11 +80,13 @@ private:
   Segment                       _from;
   Segment                       _to;
   const std::vector<Segment>*   _segments;
+  int                           _threshold;
 
   // Outputs
   int                           _maximum;
   std::vector<int>              _histogram;
   std::vector<Segment>          _maximumRays;
+  std::vector<CuttingSegment>   _goodRays;
 };
 
 #endif // DC_2D2_H

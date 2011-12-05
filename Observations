@@ -1,0 +1,2 @@
+* It is a sampling, some lines can be counted twice, some lines can't be counted (but I think they could if the commented code were used).
+* The show discretization planes option can be made cleaner or not drawing an X.

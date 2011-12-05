@@ -27,9 +27,12 @@ public:
 
   void setComputeHistogram(bool computeHistogram);
   void setComputeMaximumRays(bool computeMaximumRays);
+  void setComputeGoodRays(bool computeGoodRays);
+  void setThreshold(int threshold);
 
   int maximum() const { return _maximum; }
   const std::vector<Segment> &maximumRays() const { return _maximumRays; }
+  const std::vector<CuttingSegment> &goodRays() const { return _goodRays; }
   const std::vector<Segment> &usedPlanes() const { return _usedPlanes; }
   const std::vector<Point> &intersectionPoints() const { return _intersectionPoints; }
 
@@ -54,21 +57,25 @@ private:
   const TriMesh *_mesh;
   int _fboWidth;
   int _fboHeight;
-    int _discretSteps;
+  int _discretSteps;
   int _maximum;
 
   // State
   bool _computeHistogram;
   bool _computeMaximumRays;
+  bool _computeGoodRays;
+  int _threshold;
 
   // Output
   std::vector<Segment> _maximumRays;
+  std::vector<CuttingSegment> _goodRays;
   std::vector<Segment> _usedPlanes;
   std::vector<int> _histogram;
   std::vector<Point> _intersectionPoints;
   //  std::vector<Segment> _intersectionSegments;
 
   friend int doInteractive(const TriMesh& mesh);
+  friend void drawRays();
 };
 
 

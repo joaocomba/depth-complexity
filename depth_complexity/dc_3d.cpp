@@ -20,7 +20,8 @@ DepthComplexity3D::DepthComplexity3D(int fboWidth, int fboHeight, int discretSte
   _discretSteps(discretSteps),
   _maximum(0),
   _computeHistogram(false),
-  _computeMaximumRays(false) {
+  _computeMaximumRays(false),
+  _computeGoodRays(false) {
 
   _dc2d = new DepthComplexity2D(_fboWidth, _fboHeight);
 }
@@ -37,6 +38,16 @@ void DepthComplexity3D::setComputeMaximumRays(bool computeMaximumRays) {
   this->_computeMaximumRays = computeMaximumRays;
   assert(_dc2d != 0);
   _dc2d->setComputeMaximumRays(computeMaximumRays);
+}
+
+void DepthComplexity3D::setComputeGoodRays(bool computeGoodRays) {
+  this->_computeGoodRays = computeGoodRays;
+  assert(_dc2d != 0);
+  _dc2d->setComputeGoodRays(computeGoodRays);
+}
+
+void DepthComplexity3D::setThreshold(int threshold) {
+  this->_threshold = threshold;
 }
 
 void DepthComplexity3D::writeHistogram(std::ostream& out) {
@@ -64,6 +75,7 @@ void DepthComplexity3D::process(const TriMesh &mesh) {
   this->_mesh = &mesh;
 
   _usedPlanes.clear();
+  _goodRays.clear();
   _maximum = 0;
   processMeshAlign(AlignZ, AlignX);
   processMeshAlign(AlignZ, AlignY);
@@ -175,7 +187,7 @@ void DepthComplexity3D::processMeshAlign(const PlaneAlign &palign, const PlaneAl
       vec3d dsa = sa.b - sa.a; sa.a -= dsa; sa.b += dsa;
       vec3d dsb = sb.b - sb.a; sb.a -= dsb; sb.b += dsb;
 
-      _dc2d->process(sa, sb, segments);
+      _dc2d->process(sa, sb, segments, _threshold);
 
       int tempMaximum = _dc2d->maximum();
       if (tempMaximum >= _maximum) {
@@ -200,12 +212,15 @@ void DepthComplexity3D::processMeshAlign(const PlaneAlign &palign, const PlaneAl
         }
 
         _maximumRays.insert(_maximumRays.end(), tempRays.begin(), tempRays.end());
+        // Shouldn't the histogram be used without regard to the current tempMaximum?
         for(unsigned i=0; i< tempHist.size(); ++i)
           _histogram[i] += tempHist[i];
 
 //        _intersectionSegments.insert(_intersectionSegments.end(), segments.begin(), segments.end());
 //        _intersectionPoints.insert(_intersectionPoints.end(), points.begin(), points.end());
       }
+      std::vector<CuttingSegment> tempRays = _dc2d->goodRays();
+      _goodRays.insert(_goodRays.begin(), tempRays.begin(), tempRays.end());
     }
   }
 }

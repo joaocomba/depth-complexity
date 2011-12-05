@@ -16,7 +16,9 @@ DepthComplexity2D::DepthComplexity2D(const int fboWidth, const int fboHeight){
   _fboHeight = fboHeight;
   _computeHistogram = false;
   _computeMaximumRays = false;
+  _computeGoodRays = false;
   _maximum = 0;
+  _threshold = 0;
 
   assert(initFBO());
 }
@@ -97,13 +99,14 @@ bool checkFramebufferStatus() {
 }
 
 void DepthComplexity2D::process(
-  const Segment &from, const Segment &to, const std::vector<Segment> &segments) {
+  const Segment &from, const Segment &to, const std::vector<Segment> &segments, int threshold) {
   _from = from;
   _to = to;
   _segments = &segments;
+  _threshold = threshold;
 
   findDepthComplexity2D();
-  if (_computeHistogram or _computeMaximumRays)
+  if (_computeHistogram or _computeMaximumRays or _computeGoodRays)
     findMaximumRaysAndHistogram();
 }
 
@@ -237,6 +240,7 @@ int DepthComplexity2D::findMaxValueInStencil() {
 
 void DepthComplexity2D::findMaximumRaysAndHistogram() {
   _maximumRays.clear();
+  _goodRays.clear();
   _histogram.resize(_maximum + 1);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _fboId);
   glPushAttrib(GL_VIEWPORT_BIT);
@@ -259,6 +263,17 @@ void DepthComplexity2D::findMaximumRaysAndHistogram() {
             seg.a = _from.a*(1.f-t1) + _from.b*t1;
             seg.b = _to.a*(1.f-t2) + _to.b*t2;
             _maximumRays.push_back(seg);
+          }
+        }
+        if (_computeGoodRays) {
+          CuttingSegment seg;
+          if (val >= _threshold) {
+            double t1 = c/(double)_fboWidth;
+            double t2 = r/(double)_fboHeight;
+            seg.a = _from.a*(1.f-t1) + _from.b*t1;
+            seg.b = _to.a*(1.f-t2) + _to.b*t2;
+            seg.intersect = val;
+            _goodRays.push_back(seg);
           }
         }
       }

@@ -27,6 +27,7 @@
 
 float radius = 0.01;
 bool showPlanes = false;
+bool doGoodRays = true;
 vec4f sphereColor(0.0, 1.0, 0.0, 1.0);
 
 DepthComplexity3D *dc3d;
@@ -192,17 +193,36 @@ void drawMesh(const TriMesh& mesh, const vec3f& dir)
     
 void drawRays()
 {
-    const std::vector<Segment>& rays = dc3d->maximumRays();
-    // draw rays
-    glLineWidth(1);
-    glBegin(GL_LINES);
-    glColor3f(0.5, 0.0, 0.5);
-      for (unsigned i=0; i<rays.size(); ++i) {
-        const Segment &r = rays[i];
-        glVertex3f(r.a.x, r.a.y, r.a.z);
-        glVertex3f(r.b.x, r.b.y, r.b.z);
+    if(!doGoodRays) {
+        const std::vector<Segment>& rays = dc3d->maximumRays();
+        // draw rays
+        glLineWidth(1);
+        glBegin(GL_LINES);
+        glColor3f(0.5, 0.0, 0.5);
+          for (unsigned i=0; i<rays.size(); ++i) {
+            const Segment &r = rays[i];
+            glVertex3f(r.a.x, r.a.y, r.a.z);
+            glVertex3f(r.b.x, r.b.y, r.b.z);
+          }
+        glEnd();
+    }
+    
+    if(doGoodRays) {
+      const std::vector<CuttingSegment>& gRays = dc3d->goodRays();
+      // draw rays
+      for (unsigned i=0; i<gRays.size(); ++i) {
+        const CuttingSegment &r = gRays[i];
+        if(r.intersect < dc3d->_threshold)
+          continue;
+        glLineWidth( (r.intersect - dc3d->_threshold)*3 + 1 );
+        glBegin(GL_LINES);
+        double color = ((dc3d->_maximum - r.intersect)*(0.5))/(dc3d->_maximum-dc3d->_threshold);
+        glColor3f(1.0 - color, color, color);
+          glVertex3f(r.a.x, r.a.y, r.a.z);
+          glVertex3f(r.b.x, r.b.y, r.b.z);
+        glEnd();
       }
-    glEnd();
+    }
     
     if(showPlanes) {
       const std::vector<Segment>& bounds = dc3d->usedPlanes();
@@ -245,10 +265,16 @@ void setupCamera(Camera& cam)
 void recompute(void *data)
 {
     const TriMesh* mesh = reinterpret_cast<const TriMesh*>(data);
+    if(doGoodRays)
+      dc3d->setComputeGoodRays(true);
+    else
+      dc3d->setComputeGoodRays(false);
     tic();
     dc3d->process(*mesh);
     toc("Depth Complexity");
     std::clog << "Maximum: " << dc3d->maximum() << std::endl;
+    if(doGoodRays)
+      std::clog << "Number of good rays: " << dc3d->goodRays().size() << std::endl;
 }
 
 void
@@ -336,12 +362,17 @@ int doInteractive(const TriMesh& mesh)
     
     dc3d = new DepthComplexity3D(512, 512, 10);
     dc3d->setComputeMaximumRays(true);
+    dc3d->setThreshold(10);
 
     TwAddVarRW(bar, "rotate(xz)", TW_TYPE_BOOLCPP, &rotate, " ");
     
     TwAddVarRW(bar, "rotate(yz)", TW_TYPE_BOOLCPP, &rotate2, " ");
     
     TwAddVarRW(bar, "showPlanes", TW_TYPE_BOOLCPP, &showPlanes, " label='show discret. planes' ");
+
+    TwAddVarRW(bar, "goodRays", TW_TYPE_BOOLCPP, &doGoodRays, " label='show more rays' ");
+
+    TwAddVarRW(bar, "goodThreshold", TW_TYPE_UINT32, &dc3d->_threshold, " label='intersection threshold' min=0 ");
 
     TwAddVarRW(bar, "discretSteps", TW_TYPE_UINT32, &dc3d->_discretSteps, " label='discret. steps' min=2 ");
 
