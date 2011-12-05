@@ -63,6 +63,7 @@ void DepthComplexity3D::writeRays(std::ostream& out) {
 void DepthComplexity3D::process(const TriMesh &mesh) {
   this->_mesh = &mesh;
 
+  _usedPlanes.clear();
   _maximum = 0;
   processMeshAlign(AlignZ, AlignX);
   processMeshAlign(AlignZ, AlignY);
@@ -156,6 +157,16 @@ void DepthComplexity3D::processMeshAlign(const PlaneAlign &palign, const PlaneAl
       }
       }
 
+      Segment saa, sbb;
+      saa.a = sa.a;
+      saa.b = sb.b;
+      sbb.a = sa.b;
+      sbb.b = sb.a;
+      _usedPlanes.push_back(sa);
+      _usedPlanes.push_back(saa);
+      _usedPlanes.push_back(sb);
+      _usedPlanes.push_back(sbb);
+
       vec4d plane = makePlane(sa.a, sa.b, sb.a);
       std::vector<Segment> segments;
       processMeshPlane(plane, &segments);
@@ -217,7 +228,7 @@ bool DepthComplexity3D::intersectPlaneTriangle(const vec4d& plane, const Triangl
   db = dot(plane, vec4d(tri.b, 1));
   dc = dot(plane, vec4d(tri.c, 1));
 
-  if (da == 0 && db == 0 && dc == 0)
+  if (da == 0 && db == 0 && dc == 0) // if the triangle is inside the plane, there's no intersection
     return false;
 
   vec3d *p = &seg->a;

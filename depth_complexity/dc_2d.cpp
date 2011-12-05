@@ -91,7 +91,7 @@ bool checkFramebufferStatus() {
     return false;
 
   default:
-    std::cerr << "[ERROR] Unknow error." << std::endl;
+    std::cerr << "[ERROR] Unknown error." << std::endl;
     return false;
   }
 }
@@ -253,7 +253,7 @@ void DepthComplexity2D::findMaximumRaysAndHistogram() {
 
         if (_computeMaximumRays) {
           Segment seg;
-          if (val >= 3) {
+          if (val == _maximum) {
             double t1 = c/(double)_fboWidth;
             double t2 = r/(double)_fboHeight;
             seg.a = _from.a*(1.f-t1) + _from.b*t1;

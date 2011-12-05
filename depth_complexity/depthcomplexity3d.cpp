@@ -26,6 +26,7 @@
 #include "timer.h"
 
 float radius = 0.01;
+bool showPlanes = false;
 vec4f sphereColor(0.0, 1.0, 0.0, 1.0);
 
 DepthComplexity3D *dc3d;
@@ -202,6 +203,20 @@ void drawRays()
         glVertex3f(r.b.x, r.b.y, r.b.z);
       }
     glEnd();
+    
+    if(showPlanes) {
+      const std::vector<Segment>& bounds = dc3d->usedPlanes();
+      // draw planes
+      glLineWidth(1);
+      glBegin(GL_LINES);
+      glColor3f(0.5, 0.5, 0.5);
+        for (unsigned i=0; i<bounds.size(); ++i) {
+          const Segment &r = bounds[i];
+          glVertex3f(r.a.x, r.a.y, r.a.z);
+          glVertex3f(r.b.x, r.b.y, r.b.z);
+        }
+      glEnd();
+    }
 
     const std::vector<Point>& points = dc3d->intersectionPoints();
     glEnable(GL_LIGHTING);
@@ -312,6 +327,7 @@ int doInteractive(const TriMesh& mesh)
     TwDefine(" GLOBAL ");
 
     bool rotate = false;
+    bool rotate2 = false;
     vec3f top(0.25, 0.25, .5), mid(0.75, 0.75, .85), bot(1, 1, 1);
 
     vec4f objdiff(0.55, 0.5, 0, 0.5), objspec(.75, .75, .75, .2);
@@ -321,7 +337,11 @@ int doInteractive(const TriMesh& mesh)
     dc3d = new DepthComplexity3D(512, 512, 10);
     dc3d->setComputeMaximumRays(true);
 
-    TwAddVarRW(bar, "rotate", TW_TYPE_BOOLCPP, &rotate, " ");
+    TwAddVarRW(bar, "rotate(xz)", TW_TYPE_BOOLCPP, &rotate, " ");
+    
+    TwAddVarRW(bar, "rotate(yz)", TW_TYPE_BOOLCPP, &rotate2, " ");
+    
+    TwAddVarRW(bar, "showPlanes", TW_TYPE_BOOLCPP, &showPlanes, " label='show discret. planes' ");
 
     TwAddVarRW(bar, "discretSteps", TW_TYPE_UINT32, &dc3d->_discretSteps, " label='discret. steps' min=2 ");
 
@@ -359,6 +379,9 @@ int doInteractive(const TriMesh& mesh)
 
         if (rotate)
             cam.relMove(vec3f(.04, 0, 0));
+            
+        if (rotate2)
+            cam.relMove(vec3f(0, .04, 0));
 
         setupCamera(cam);
 

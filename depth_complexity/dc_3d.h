@@ -30,6 +30,7 @@ public:
 
   int maximum() const { return _maximum; }
   const std::vector<Segment> &maximumRays() const { return _maximumRays; }
+  const std::vector<Segment> &usedPlanes() const { return _usedPlanes; }
   const std::vector<Point> &intersectionPoints() const { return _intersectionPoints; }
 
   void writeHistogram(std::ostream& in);
@@ -62,6 +63,7 @@ private:
 
   // Output
   std::vector<Segment> _maximumRays;
+  std::vector<Segment> _usedPlanes;
   std::vector<int> _histogram;
   std::vector<Point> _intersectionPoints;
   //  std::vector<Segment> _intersectionSegments;
