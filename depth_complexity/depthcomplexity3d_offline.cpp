@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cstring>
 #include <GL/glew.h>
 #ifdef __APPLE__
@@ -31,8 +32,10 @@ int main (int argc, char **argv) {
   const int fboWidth  = cmd_option("-fboWidth",  512, "Framebuffer width.");
   const int fboHeight = cmd_option("-fboHeight", 512, "Framebuffer height.");
   const int discretSteps = cmd_option("-dsteps", 10, "Discrete steps.");
-  const char *filenameHistogram = cmd_option("-fh", "", "Save a *.txt file with histogram information");
+  const char *filenameHistogram = cmd_option("-fh", "hist01.txt", "Save a *.txt file with histogram information");
   const char *filenameRays = cmd_option("-fr", "", "Save a *.off file with rays in ");
+  const bool computeMoreRays = cmd_option("-cmr", false, "Whether rays above the threshold of intersections should be output");
+  const int intersectionThreshold  = cmd_option("-it",  0, "Threshold of intersections");
 
   try {
     tic();
@@ -57,6 +60,8 @@ int main (int argc, char **argv) {
     DepthComplexity3D dc3d(fboWidth, fboHeight, discretSteps);
     dc3d.setComputeHistogram(strcmp(filenameHistogram, "")!=0);
     dc3d.setComputeMaximumRays(strcmp(filenameRays, "")!=0);
+    dc3d.setComputeGoodRays(computeMoreRays);
+    dc3d.setThreshold(intersectionThreshold);
 
     tic();
     dc3d.process(mesh);
@@ -83,6 +88,22 @@ int main (int argc, char **argv) {
         fileRays.close();
       } else throw "Ray's file should be *.off!";
     }
+   
+    // Saving MoreRays file
+    if(computeMoreRays) {
+      unsigned numRays = 0;
+      for(unsigned i = dc3d.getThreshold() ; i <= dc3d.maximum() ; ++i)
+        numRays += dc3d.goodRays(i).size();
+      std::cout << "Number of good rays: " << numRays << std::endl;
+      for(unsigned i=intersectionThreshold;i<=dc3d.maximum();++i) {
+        std::ostringstream filenameMoreRays;
+        filenameMoreRays << "rays" << i << ".off";
+        std::ofstream fileRays(filenameMoreRays.str().c_str());
+        dc3d.writeRays(fileRays,dc3d.goodRays(i));
+        fileRays.close();
+      }
+    }
+      
   } catch (const char* msg)  {
     std::cerr << "Failed: " << msg << std::endl;
     return 1;

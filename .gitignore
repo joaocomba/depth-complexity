@@ -1,3 +1,5 @@
 *.[oa]
 *~
-hist-*.txt
+hist*.txt
+*.off
+

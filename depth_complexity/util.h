@@ -21,11 +21,11 @@ struct Segment {
 };
 bool operator<(const Segment &s1, const Segment &s2);
 
-struct CuttingSegment: Segment {
+/*struct CuttingSegment: Segment {
   CuttingSegment() : intersect(0) {}
   CuttingSegment(const Segment &s, const int intersect_ = 0):intersect(intersect_) {}
   int intersect;
-};
+};*/
 
 struct BoundingBox {
     vec3d min, max;

@@ -99,11 +99,14 @@ bool checkFramebufferStatus() {
 }
 
 void DepthComplexity2D::process(
-  const Segment &from, const Segment &to, const std::vector<Segment> &segments, int threshold) {
+  const Segment &from, const Segment &to, const std::vector<Segment> &segments) {
   _from = from;
   _to = to;
   _segments = &segments;
-  _threshold = threshold;
+  
+  /*std::cout << _textureId << " " << _fboId << " " << _rboId << " " << _status << " "
+            << _computeHistogram << " " << _computeMaximumRays << " " << _computeGoodRays << " "
+            << _fboWidth << " " << _fboHeight << " " << _segments->size() << " " << _threshold << std::endl;// " " << _from << " " << _to << " " */
 
   findDepthComplexity2D();
   if (_computeHistogram or _computeMaximumRays or _computeGoodRays)
@@ -241,40 +244,35 @@ int DepthComplexity2D::findMaxValueInStencil() {
 void DepthComplexity2D::findMaximumRaysAndHistogram() {
   _maximumRays.clear();
   _goodRays.clear();
+  _goodRays.resize(_maximum + 1);
+  _histogram.clear();
   _histogram.resize(_maximum + 1);
+
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _fboId);
   glPushAttrib(GL_VIEWPORT_BIT);
     glViewport(0.0, 0.0, _fboWidth, _fboHeight);
+    
 
     GLubyte stencilSave[_fboWidth*_fboHeight];
     glReadPixels(0, 0, _fboWidth, _fboHeight, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, stencilSave);
 
     for(int r=0; r<_fboHeight; ++r) {
       for(int c=0; c<_fboWidth; ++c) {
-        GLubyte val = stencilSave[r*_fboWidth+c];
+        //GLubyte val = stencilSave[r*_fboWidth+c];
+        unsigned val = stencilSave[r*_fboWidth+c];
 
         if (_computeHistogram) _histogram[val]++;
 
-        if (_computeMaximumRays) {
+        if ((_computeMaximumRays && val == _maximum) || (_computeGoodRays && val >= _threshold)) {
           Segment seg;
-          if (val == _maximum) {
-            double t1 = c/(double)_fboWidth;
-            double t2 = r/(double)_fboHeight;
-            seg.a = _from.a*(1.f-t1) + _from.b*t1;
-            seg.b = _to.a*(1.f-t2) + _to.b*t2;
+		  double t1 = c/(double)_fboWidth;
+		  double t2 = r/(double)_fboHeight;
+		  seg.a = _from.a*(1.f-t1) + _from.b*t1;
+		  seg.b = _to.a*(1.f-t2) + _to.b*t2;
+          if (val == _maximum)
             _maximumRays.push_back(seg);
-          }
-        }
-        if (_computeGoodRays) {
-          CuttingSegment seg;
-          if (val >= _threshold) {
-            double t1 = c/(double)_fboWidth;
-            double t2 = r/(double)_fboHeight;
-            seg.a = _from.a*(1.f-t1) + _from.b*t1;
-            seg.b = _to.a*(1.f-t2) + _to.b*t2;
-            seg.intersect = val;
-            _goodRays.push_back(seg);
-          }
+          if (val >= _threshold)
+            _goodRays[val].push_back(seg);
         }
       }
     }

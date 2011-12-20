@@ -207,21 +207,19 @@ void drawRays()
         glEnd();
     }
     
-    if(doGoodRays) {
-      const std::vector<CuttingSegment>& gRays = dc3d->goodRays();
+    for(unsigned i = dc3d->_threshold ; i <= dc3d->_maximum && doGoodRays ; ++i) {
+      const std::vector<Segment>& gRays = dc3d->goodRays(i);
       // draw rays
-      for (unsigned i=0; i<gRays.size(); ++i) {
-        const CuttingSegment &r = gRays[i];
-        if(r.intersect < dc3d->_threshold)
-          continue;
-        glLineWidth( (r.intersect - dc3d->_threshold)*3 + 1 );
-        glBegin(GL_LINES);
-        double color = ((dc3d->_maximum - r.intersect)*(0.5))/(dc3d->_maximum-dc3d->_threshold);
-        glColor3f(1.0 - color, color, color);
+      double color = ((dc3d->_maximum - i)*(0.5))/(dc3d->_maximum-dc3d->_threshold);
+      glLineWidth( (i - dc3d->_threshold)*3 + 1 );
+      glBegin(GL_LINES);
+      glColor3f(1.0 - color, color, color);
+        for (unsigned i=0; i<gRays.size(); ++i) {
+          const Segment &r = gRays[i];
           glVertex3f(r.a.x, r.a.y, r.a.z);
           glVertex3f(r.b.x, r.b.y, r.b.z);
-        glEnd();
-      }
+        }
+      glEnd();
     }
     
     if(showPlanes) {
@@ -273,8 +271,12 @@ void recompute(void *data)
     dc3d->process(*mesh);
     toc("Depth Complexity");
     std::clog << "Maximum: " << dc3d->maximum() << std::endl;
-    if(doGoodRays)
-      std::clog << "Number of good rays: " << dc3d->goodRays().size() << std::endl;
+    if(doGoodRays) {
+      unsigned numRays = 0;
+      for(unsigned i = dc3d->getThreshold() ; i <= dc3d->maximum() ; ++i)
+        numRays += dc3d->goodRays(i).size();
+      std::clog << "Number of good rays: " << numRays << std::endl;
+    }
 }
 
 void

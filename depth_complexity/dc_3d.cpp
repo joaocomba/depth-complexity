@@ -46,8 +46,10 @@ void DepthComplexity3D::setComputeGoodRays(bool computeGoodRays) {
   _dc2d->setComputeGoodRays(computeGoodRays);
 }
 
-void DepthComplexity3D::setThreshold(int threshold) {
+void DepthComplexity3D::setThreshold(unsigned threshold) {
   this->_threshold = threshold;
+  assert(_dc2d != 0);
+  _dc2d->setThreshold(threshold);
 }
 
 void DepthComplexity3D::writeHistogram(std::ostream& out) {
@@ -71,12 +73,32 @@ void DepthComplexity3D::writeRays(std::ostream& out) {
     out << "2 " << i << " " << (i+1) << "\n";
 }
 
+void DepthComplexity3D::writeRays(std::ostream& out, const std::vector<Segment> & _rays) {
+  out << (_rays.size()*2) << " "
+      << _rays.size() << " 0\n";
+
+  std::vector<Segment>::const_iterator ite = _rays.begin();
+  std::vector<Segment>::const_iterator end = _rays.end();
+  for (; ite != end; ++ite) {
+    out << ite->a.x << " " << ite->a.y << " " << ite->a.z << "\n"
+        << ite->b.x << " " << ite->b.y << " " << ite->b.z << "\n";
+  }
+
+  for(unsigned i=0; i<2*_rays.size(); i+=2)
+    out << "2 " << i << " " << (i+1) << "\n";
+}
+
 void DepthComplexity3D::process(const TriMesh &mesh) {
   this->_mesh = &mesh;
 
   _usedPlanes.clear();
   _goodRays.clear();
+  _goodRays.resize(1);
+  _dc2d->setThreshold(_threshold);
   _maximum = 0;
+  
+  //std::cout << _fboWidth << " " << _fboHeight << " " << _discretSteps << " " << _maximum << " " << _threshold << std::endl;
+  
   processMeshAlign(AlignZ, AlignX);
   processMeshAlign(AlignZ, AlignY);
 
@@ -187,19 +209,19 @@ void DepthComplexity3D::processMeshAlign(const PlaneAlign &palign, const PlaneAl
       vec3d dsa = sa.b - sa.a; sa.a -= dsa; sa.b += dsa;
       vec3d dsb = sb.b - sb.a; sb.a -= dsb; sb.b += dsb;
 
-      _dc2d->process(sa, sb, segments, _threshold);
+      _dc2d->process(sa, sb, segments);
 
-      int tempMaximum = _dc2d->maximum();
+      unsigned tempMaximum = _dc2d->maximum();
       if (tempMaximum >= _maximum) {
         if (tempMaximum > _maximum) {
           _maximumRays.clear();
+          _goodRays.resize(tempMaximum+1);
           _histogram.resize(tempMaximum+1);
           _intersectionPoints.clear();
           //          _intersectionSegments.clear();
         }
         _maximum = tempMaximum;
         std::vector<Segment> tempRays = _dc2d->maximumRays();
-        std::vector<int> tempHist = _dc2d->histogram();
 
         // Testing rays and saving intersectin points.
         for (unsigned r=0; r<tempRays.size(); ++r) {
@@ -211,16 +233,25 @@ void DepthComplexity3D::processMeshAlign(const PlaneAlign &palign, const PlaneAl
           }
         }
 
-        _maximumRays.insert(_maximumRays.end(), tempRays.begin(), tempRays.end());
-        // Shouldn't the histogram be used without regard to the current tempMaximum?
-        for(unsigned i=0; i< tempHist.size(); ++i)
-          _histogram[i] += tempHist[i];
-
 //        _intersectionSegments.insert(_intersectionSegments.end(), segments.begin(), segments.end());
 //        _intersectionPoints.insert(_intersectionPoints.end(), points.begin(), points.end());
+
+        _maximumRays.insert(_maximumRays.end(), tempRays.begin(), tempRays.end());
+        // Shouldn't the histogram be used without regard to the current tempMaximum? (changed it)
       }
-      std::vector<CuttingSegment> tempRays = _dc2d->goodRays();
-      _goodRays.insert(_goodRays.begin(), tempRays.begin(), tempRays.end());
+      
+      std::vector<unsigned long long> tempHist = _dc2d->histogram();
+      for(unsigned i=0; i< tempHist.size(); ++i)
+        _histogram[i] += tempHist[i];
+      
+      if(_computeGoodRays) {
+        //std::cout << "size of goodRays: " << _goodRays.size() << " and _threshold = " << _threshold << std::endl;
+        for(unsigned i = _threshold ; i <= tempMaximum ; ++i) {
+          //std::cout << "i = " << i << " and size(i) = " << _dc2d->goodRays(i).size() << std::endl;
+          std::vector<Segment> tempRays = _dc2d->goodRays(i);
+          _goodRays[i].insert(_goodRays[i].begin(), tempRays.begin(), tempRays.end());
+        }
+      }
     }
   }
 }
