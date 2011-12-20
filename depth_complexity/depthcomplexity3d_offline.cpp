@@ -27,12 +27,12 @@
 std::string getExtension(const std::string& filename);
 
 int main (int argc, char **argv) {
-  cmd_usage("Programa para ejecutar dc in offline mode");
+  cmd_usage("Programa para executar dc em modo offline");
   const char *filename = cmd_option("-f", "models/suzanne.obj", "Model in OBJ or OFF format.");
   const int fboWidth  = cmd_option("-fboWidth",  512, "Framebuffer width.");
   const int fboHeight = cmd_option("-fboHeight", 512, "Framebuffer height.");
   const int discretSteps = cmd_option("-dsteps", 10, "Discrete steps.");
-  const char *filenameHistogram = cmd_option("-fh", "hist01.txt", "Save a *.txt file with histogram information");
+  const char *filenameHistogram = cmd_option("-fh", "", "Save a *.txt file with histogram information");
   const char *filenameRays = cmd_option("-fr", "", "Save a *.off file with rays in ");
   const bool computeMoreRays = cmd_option("-cmr", false, "Whether rays above the threshold of intersections should be output");
   const int intersectionThreshold  = cmd_option("-it",  0, "Threshold of intersections");

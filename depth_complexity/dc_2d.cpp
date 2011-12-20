@@ -265,10 +265,10 @@ void DepthComplexity2D::findMaximumRaysAndHistogram() {
 
         if ((_computeMaximumRays && val == _maximum) || (_computeGoodRays && val >= _threshold)) {
           Segment seg;
-		  double t1 = c/(double)_fboWidth;
-		  double t2 = r/(double)_fboHeight;
-		  seg.a = _from.a*(1.f-t1) + _from.b*t1;
-		  seg.b = _to.a*(1.f-t2) + _to.b*t2;
+          double t1 = c/(double)_fboWidth;
+          double t2 = r/(double)_fboHeight;
+          seg.a = _from.a*(1.f-t1) + _from.b*t1;
+          seg.b = _to.a*(1.f-t2) + _to.b*t2;
           if (val == _maximum)
             _maximumRays.push_back(seg);
           if (val >= _threshold)
