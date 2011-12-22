@@ -1,5 +1,5 @@
 # Usage:
-# $ python plotHistograms.py model [lower_limit] upper_limit
+# this should be called by plotHistograms.sh
 
 import sys
 import os
@@ -9,13 +9,8 @@ import numpy
 exec_name = sys.argv[4]
 model = sys.argv[1]
 lower = sys.argv[2]
-try:
-	upper = sys.argv[3];
-except:
-	upper = lower
-	lower = 2
-	threshold = 0
-	
+upper = sys.argv[3];
+
 lower = int(lower)
 upper = int(upper)
 
