@@ -93,6 +93,8 @@ void RDepthComplexity3D::process(const TriMesh &mesh) {
   _usedPlanes.clear();
   _goodRays.clear();
   _goodRays.resize(1);
+  _histogram.clear();
+  _histogram.resize(1);
   _maximum = 0;
   
   /* test */

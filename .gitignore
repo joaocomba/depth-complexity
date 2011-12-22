@@ -2,4 +2,6 @@
 *~
 hist*.txt
 *.off
+*.svg
+toPlot.txt
 
