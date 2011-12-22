@@ -301,7 +301,7 @@ bool DepthComplexity3D::intersectPlaneSegment(const vec4d& plane, const vec3d& p
   double den = dot(plane.xyz(), p1 - p0);
   double r = num / den;
   *pt = mix(p0, p1, r);
-  if (0 >= r && r <= 1)
+  if (0 <= r && r <= 1)
       return true;
   return false;
 }

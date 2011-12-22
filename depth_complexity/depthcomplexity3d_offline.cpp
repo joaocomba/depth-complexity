@@ -1,6 +1,10 @@
 #include "flags.h"
 #include "util.h"
+#ifdef USE_RANDOM_DC3D
+#include "dc_3d_random.h"
+#else
 #include "dc_3d.h"
+#endif
 #include "timer.h"
 
 #include <iostream>
@@ -57,7 +61,11 @@ int main (int argc, char **argv) {
     glutCreateWindow("Dual Ray Implementation");
     glewInit();
 
+	#ifdef USE_RANDOM_DC3D
+    RDepthComplexity3D dc3d(fboWidth, fboHeight, discretSteps);
+	#else
     DepthComplexity3D dc3d(fboWidth, fboHeight, discretSteps);
+    #endif
     dc3d.setComputeHistogram(strcmp(filenameHistogram, "")!=0);
     dc3d.setComputeMaximumRays(strcmp(filenameRays, "")!=0);
     dc3d.setComputeGoodRays(computeMoreRays);

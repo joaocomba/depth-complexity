@@ -22,7 +22,11 @@
 #include "vector.hpp"
 #include "camera.hpp"
 #include "util.h"
+#ifdef USE_RANDOM_DC3D
+#include "dc_3d_random.h"
+#else
 #include "dc_3d.h"
+#endif
 #include "timer.h"
 
 float radius = 0.01;
@@ -30,7 +34,11 @@ bool showPlanes = false;
 bool doGoodRays = true;
 vec4f sphereColor(0.0, 1.0, 0.0, 1.0);
 
+#ifdef USE_RANDOM_DC3D
+RDepthComplexity3D *dc3d;
+#else
 DepthComplexity3D *dc3d;
+#endif
 
 template<class T>
 T clamp(const T& min, const T& x, const T& max)
@@ -362,7 +370,11 @@ int doInteractive(const TriMesh& mesh)
     GLfloat shine = 50;
     bool showObj = true;
     
+    #ifdef USE_RANDOM_DC3D
+    dc3d = new RDepthComplexity3D(512, 512, 10);
+    #else
     dc3d = new DepthComplexity3D(512, 512, 10);
+    #endif
     dc3d->setComputeMaximumRays(true);
     dc3d->setThreshold(10);
 

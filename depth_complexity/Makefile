@@ -27,10 +27,15 @@ LDFLAGS = $(ATB_LDFLAGS) $(GLEW_LDFLAGS) -Wall -Werror
 
 .PHONY: all clean
 
-all : main_joao depthcomplexity2d depthcomplexity3d_offline depthcomplexity3d
+all : main_joao depthcomplexity2d depthcomplexity3d_offline depthcomplexity3d \
+	  randomdepthcomplexity3d randomdepthcomplexity3d_offline
 
 clean:
-	rm -f *.o depthcomplexity3d depthcomplexity2d main_joao test_intersection depthcomplexity3d_offline
+	rm -f *.o depthcomplexity3d depthcomplexity2d main_joao \
+	test_intersection depthcomplexity3d_offline randomdepthcomplexity3d randomdepthcomplexity3d_offline
+	
+hard_clean: clean
+	rm -f *.off hist*.txt
 
 depthcomplexity3d: depthcomplexity3d.o camera.o dc_2d.o dc_3d.o util.o timer.o
 	g++ -g -o $@ $^ $(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
@@ -44,4 +49,12 @@ depthcomplexity3d_offline: \
 
 main_joao: main_joao.o
 	g++ -g -o $@ $^ $(LDFLAGS) $(GLUT_LDFLAGS)
+
+randomdepthcomplexity3d: dc_3d_random.o camera.o util.o timer.o
+	g++ -g -o $@ depthcomplexity3d.cpp -D "USE_RANDOM_DC3D" $^ $(LDFLAGS) \
+	$(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
+	
+randomdepthcomplexity3d_offline: dc_3d_random.o flags.o util.o timer.o
+	g++ -g -o $@ depthcomplexity3d_offline.cpp -D "USE_RANDOM_DC3D" $^ \
+	$(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
 
