@@ -87,7 +87,7 @@ void RDepthComplexity3D::writeRays(std::ostream& out, const std::vector<Segment>
 
 double uniformRandom() { return rand()/double(RAND_MAX); }
 
-#define CONSTANT_FACTOR 2400
+#define CONSTANT_FACTOR 500
 void RDepthComplexity3D::process(const TriMesh &mesh) {
    this->_mesh = &mesh;
 

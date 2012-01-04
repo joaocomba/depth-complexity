@@ -24,7 +24,7 @@ do
 		CURR_DIR=${TEST_DIR}/${NAME}/${TYPE[i]}
 		EXIT=0
 		DSTEPS=3
-		ITH=10
+		ITH=100
 		BEST[i]=0
 		until [ $EXIT -eq 1 ]; do
 			echo "Current DSTEPS is ${DSTEPS}"
@@ -44,5 +44,6 @@ do
 			fi
 		done
 	done
-	echo "BEST USUAL: ${BEST[0]}\nBEST RANDOM: ${BEST[1]}" > ${TEST_DIR}/${NAME}/comp.txt
+	echo "BEST USUAL: ${BEST[0]}" > ${TEST_DIR}/${NAME}/comp.txt
+	echo "BEST RANDOM: ${BEST[1]}" >> ${TEST_DIR}/${NAME}/comp.txt
 done
