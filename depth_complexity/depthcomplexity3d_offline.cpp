@@ -31,7 +31,7 @@
 std::string getExtension(const std::string& filename);
 
 int main (int argc, char **argv) {
-  cmd_usage("Programa para executar dc em modo offline");
+  cmd_usage("Program to find depth complexity out (offline mode)");
   const char *filename = cmd_option("-f", "models/suzanne.obj", "Model in OBJ or OFF format.");
   const int fboWidth  = cmd_option("-fboWidth",  512, "Framebuffer width.");
   const int fboHeight = cmd_option("-fboHeight", 512, "Framebuffer height.");

@@ -36,6 +36,7 @@ clean:
 	
 hard_clean: clean
 	rm -f *.off hist*.txt *.svg toPlot.txt
+	rm -rf Tests
 
 depthcomplexity3d: depthcomplexity3d.o camera.o dc_2d.o dc_3d.o util.o timer.o
 	g++ -g -o $@ $^ $(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
