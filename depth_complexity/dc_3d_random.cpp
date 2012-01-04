@@ -27,7 +27,8 @@ RDepthComplexity3D::RDepthComplexity3D(int fboWidth, int fboHeight, int discretS
   _computeHistogram(false),
   _computeMaximumRays(false),
   _computeGoodRays(false) {
-
+  
+  _goodRays.resize(1);
 }
 
 RDepthComplexity3D::~RDepthComplexity3D() {}
@@ -105,7 +106,7 @@ void RDepthComplexity3D::process(const TriMesh &mesh) {
   Triangle tri;
   tri.a = Point(-2,3,-2);
   tri.b = Point(2,3,-2);
-  tri.b = Point(-1,3,5);
+  tri.c = Point(-1,3,5);
   assert(intersectTriangleSegment(seg,tri,&p));
   
   //std::cout << _fboWidth << " " << _fboHeight << " " << _discretSteps << " " << _maximum << " " << _threshold << std::endl;
