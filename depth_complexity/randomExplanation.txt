@@ -1,0 +1,4 @@
+The random approach consists in picking two random points in the sphere that surrounds the model, following the guidance in this article in order to achieve a true uniform distribution:
+http://mathworld.wolfram.com/SpherePointPicking.html
+
+then counting the number of intersections between the model and the segment between these two points. This is done repeatedly until a certain number of repetitions is reached. This number is proportional to the square of the received discrete steps parameter.

@@ -15,9 +15,9 @@ TYPE[0]="Normal"
 TYPE[1]="Random"
 EXEC_NAME[0]="depthcomplexity3d_offline"
 EXEC_NAME[1]="randomdepthcomplexity3d_offline"
-for i in 0 1
+for m in $MODEL_DIR/*
 do
-	for m in $MODEL_DIR/*
+	for i in 0 1
 	do
 		NAME="$(basename ${m})"
 		echo "Current model is ${NAME}"
@@ -25,6 +25,7 @@ do
 		EXIT=0
 		DSTEPS=3
 		ITH=10
+		BEST[i]=0
 		until [ $EXIT -eq 1 ]; do
 			echo "Current DSTEPS is ${DSTEPS}"
 			timeout ${TIME_LIMIT} ./${EXEC_NAME[i]} -f ${MODEL_DIR}/${NAME} -dsteps ${DSTEPS} -fh "hist.txt" -fr "bestRays.off" -cmr true -it ${ITH}
@@ -33,6 +34,9 @@ do
 				EXIT=1
 			else
 				ITH=$((`awk 'END { print NR }' hist.txt`-2))
+				if [ ${BEST[i]} -lt $ITH ]; then
+					BEST[i]=$ITH
+				fi
 				ITH=$((ITH-(ITH/5)))
 				mkdir -p  ${CURR_DIR}/${DSTEPS}
 				mv hist.txt bestRays.off rays* ${CURR_DIR}/${DSTEPS}
@@ -40,4 +44,5 @@ do
 			fi
 		done
 	done
+	echo "BEST USUAL: ${BEST[0]}\nBEST RANDOM: ${BEST[1]}" > ${TEST_DIR}/${NAME}/comp.txt
 done
