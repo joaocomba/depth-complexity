@@ -52,9 +52,9 @@ main_joao: main_joao.o
 
 randomdepthcomplexity3d: dc_3d_random.o camera.o util.o timer.o
 	g++ -g -o $@ depthcomplexity3d.cpp -D "USE_RANDOM_DC3D" $^ $(LDFLAGS) \
-	$(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
+	$(GLFW_LDFLAGS) $(GLUT_LDFLAGS) $(GLEW_CFLAGS)
 	
 randomdepthcomplexity3d_offline: dc_3d_random.o flags.o util.o timer.o
 	g++ -g -o $@ depthcomplexity3d_offline.cpp -D "USE_RANDOM_DC3D" $^ \
-	$(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
+	$(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS) $(GLEW_CFLAGS)
 
