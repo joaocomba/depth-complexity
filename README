@@ -3,9 +3,9 @@ Tutorial GIT:
  * Criar usuário em http://github.com
  * Seguir passos de instalação em http://help.github.com/set-up-git-redirect
  * Executar os comandos a seguir:
-  $ git clone git://github.com/bfiss/depth-complexity.git
+  $ git clone git://github.com/joaocomba/depth-complexity.git
   $ cd depth-complexity
-  $ git remote add origin git@github.com:bfiss/depth-complexity.git
+  $ git remote add origin git@github.com:joaocomba/depth-complexity.git
  * Para atualizar para a mais nova versão:
   $ git pull
  * Para adicionar um novo arquivo:
@@ -16,4 +16,4 @@ Tutorial GIT:
   $ git commit -a -m "breve descrição das suas modificações"
  Para enviar as mudanças ao servidor:
   $ git push --all origin
- * O link para o projeto é: http://github.com/bfiss/depth-complexity
+ * O link para o projeto é: http://github.com/joaocomba/depth-complexity
