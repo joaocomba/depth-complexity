@@ -38,7 +38,7 @@ hard_clean: clean
 	rm -f *.off hist*.txt *.svg toPlot.txt
 	rm -rf Tests
 
-depthcomplexity3d: depthcomplexity3d.o camera.o dc_2d.o dc_3d.o util.o timer.o
+depthcomplexity3d: depthcomplexity3d.o camera/Camera.o camera/float3.o dc_2d.o dc_3d.o util.o timer.o
 	g++ -g -o $@ $^ $(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS)
 
 depthcomplexity2d: depthcomplexity2d.o dc_2d.o util.o flags.o timer.o
@@ -51,7 +51,7 @@ depthcomplexity3d_offline: \
 main_joao: main_joao.o
 	g++ -g -o $@ $^ $(LDFLAGS) $(GLUT_LDFLAGS)
 
-randomdepthcomplexity3d: dc_3d_random.o camera.o util.o timer.o
+randomdepthcomplexity3d: dc_3d_random.o camera/Camera.o camera/float3.o util.o timer.o
 	g++ -g -o $@ depthcomplexity3d.cpp -D "USE_RANDOM_DC3D" $^ $(LDFLAGS) \
 	$(GLFW_LDFLAGS) $(GLUT_LDFLAGS) $(GLEW_CFLAGS)
 	

@@ -20,7 +20,9 @@
 #endif
 
 #include "vector.hpp"
-#include "camera.hpp"
+#include "camera/float3.h"
+//#include "camera.hpp"
+#include "camera/Camera.h"
 #include "util.h"
 #ifdef USE_RANDOM_DC3D
 #include "dc_3d_random.h"
@@ -256,16 +258,19 @@ void drawRays()
     }
 }
 
-void setupCamera(Camera& cam)
+void setupCamera(Camera& camera)
 {
     glViewport(0, 0, winWidth, winHeight);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50, (double)winWidth/winHeight, 0.1, 1000);
+    camera.setPerspec(50, (double)winWidth/winHeight, 0.1, 1000);
+   // gluPerspective(50, (double)winWidth/winHeight, 0.1, 1000);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    cam.applyTransform();
+    //cam.applyTransform();
+    camera.update();	
+	camera.lookAt();
 }
 
 void recompute(void *data)
@@ -323,6 +328,65 @@ drawBackground(const vec3f& top, const vec3f& mid, const vec3f& bot)
     glEnable(GL_DEPTH_TEST);
 }
 
+//________________________________________________ CAMERA
+Camera camera;
+
+//______________ MOUSE
+int mDx = 0;
+int mDy = 0;
+bool mclicked;
+int mbutton;
+
+//_______________________________________________________________ Called when a mouse button is pressed or released
+void GLFWCALL mouse_click(int button, int action){
+	if(TwEventMouseButtonGLFW(button,action))
+		return;
+	glfwGetMousePos(&mDx,&mDy);
+	mclicked=action==GLFW_PRESS;
+	mbutton=button;
+}
+
+//_______________________________________________________________ Called when a mouse move and a button is pressed
+void GLFWCALL mouse_motion(int x, int y){
+	if(TwEventMousePosGLFW(x,y))
+		return;
+	if( mclicked ){
+		float dx = mDx - x;
+		float dy = mDy - y;
+		float d = sqrt(dx*dx + dy*dy);
+		float delta = 0.001;
+
+		switch(mbutton){
+			case GLFW_MOUSE_BUTTON_MIDDLE : //look
+				//if( glutGetModifiers() == GLUT_ACTIVE_SHIFT){
+					camera.lookLefRigObj(dx * delta );
+					camera.lookUpDownObj(dy * delta);
+				/*} else { 
+					camera.lookLefRig(dx * delta);
+					camera.lookUpDown(dy * delta);
+				}*/
+			break;
+			case GLFW_MOUSE_BUTTON_LEFT:			
+				//if( glutGetModifiers() != GLUT_ACTIVE_SHIFT){
+					camera.MoveLado(dx*delta);
+					camera.MoveCimaBaixo(-dy*delta);
+				/*}else{
+					camera.MoveLadoObj(dx*delta);
+					camera.MoveCimaBaixoObj(-dy*delta);				
+				//}*/
+			break;
+			case GLFW_MOUSE_BUTTON_RIGHT: 
+				if( dy>0) d = -d;
+				//if( glutGetModifiers() != GLUT_ACTIVE_SHIFT)
+					camera.MoveFrente(d*delta);
+				/*else
+					camera.MoveFrenteObj(d*delta);*/
+			break;
+		}//end switch
+		mDx = x;	mDy = y;
+	}//end if
+}
+
 int doInteractive(const TriMesh& mesh)
 {
     glfwInit();
@@ -353,8 +417,8 @@ int doInteractive(const TriMesh& mesh)
     // Set GLFW event callbacks
     glfwSetWindowSizeCallback(WindowSizeCB);
 
-    glfwSetMouseButtonCallback((GLFWmousebuttonfun)TwEventMouseButtonGLFW);
-    glfwSetMousePosCallback((GLFWmouseposfun)TwEventMousePosGLFW);
+    glfwSetMouseButtonCallback(mouse_click);
+    glfwSetMousePosCallback(mouse_motion);
     glfwSetMouseWheelCallback((GLFWmousewheelfun)TwEventMouseWheelGLFW);
     glfwSetKeyCallback((GLFWkeyfun)TwEventKeyGLFW);
     glfwSetCharCallback((GLFWcharfun)TwEventCharGLFW);
@@ -362,8 +426,6 @@ int doInteractive(const TriMesh& mesh)
     TwBar *bar = TwNewBar("Controls");
     TwDefine(" GLOBAL ");
 
-    bool rotate = false;
-    bool rotate2 = false;
     vec3f top(0.25, 0.25, .5), mid(0.75, 0.75, .85), bot(1, 1, 1);
 
     vec4f objdiff(0.55, 0.5, 0, 0.5), objspec(.75, .75, .75, .2);
@@ -377,10 +439,6 @@ int doInteractive(const TriMesh& mesh)
     #endif
     dc3d->setComputeMaximumRays(true);
     dc3d->setThreshold(10);
-
-    TwAddVarRW(bar, "rotate(xz)", TW_TYPE_BOOLCPP, &rotate, " ");
-    
-    TwAddVarRW(bar, "rotate(yz)", TW_TYPE_BOOLCPP, &rotate2, " ");
     
     TwAddVarRW(bar, "showPlanes", TW_TYPE_BOOLCPP, &showPlanes, " label='show discret. planes' ");
 
@@ -411,27 +469,28 @@ int doInteractive(const TriMesh& mesh)
     glDisable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
-    Camera cam;
+    //Camera cam;
     BoundingBox aabb = mesh.aabb;
-    cam.target = aabb.center();
-    cam.up = vec3f(0, 1, 0);
-    cam.pos = cam.target + vec3f(0, 0, 2*aabb.extents().z);
+    
+    camera.bbox(float3(aabb.min.x,aabb.min.y,aabb.min.z), float3(aabb.max.x,aabb.max.y,aabb.max.z), true );
+	camera.front();
+    
+    //cam.target = aabb.center();
+    //cam.up = vec3f(0, 1, 0);
+    //cam.pos = cam.target + vec3f(0, 0, 2*aabb.extents().z);
 
     while( glfwGetWindowParam(GLFW_OPENED) && !glfwGetKey(GLFW_KEY_ESC) ) {
         glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
 
         drawBackground(top, mid, bot);
 
-        if (rotate)
-            cam.relMove(vec3f(.04, 0, 0));
-            
-        if (rotate2)
-            cam.relMove(vec3f(0, .04, 0));
+        setupCamera(camera);
+        
+        /*camera.update();	
+	    camera.lookAt();*/
 
-        setupCamera(cam);
-
-        GLfloat lpos[4] = { cam.pos.x, cam.pos.y, cam.pos.z, 1 };
-        glLightfv(GL_LIGHT0, GL_POSITION, lpos);
+        /*GLfloat lpos[4] = { camera.GetEye().x, camera.GetEye().y, camera.GetEye().z, 1 };
+        glLightfv(GL_LIGHT0, GL_POSITION, lpos);*/
 
 //        drawPlaneIntersection(intersectionVectors);
         drawRays();
@@ -439,7 +498,7 @@ int doInteractive(const TriMesh& mesh)
         glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &objdiff.x);
         glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, &objspec.x);
         glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
-        if (showObj) drawMesh(mesh, cam.getDir());
+        if (showObj) drawMesh(mesh, vec3f(camera.GetDir().x,camera.GetDir().y,camera.GetDir().z));
 
         // Draw tweak bars
         TwDraw();
