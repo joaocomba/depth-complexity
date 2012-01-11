@@ -118,7 +118,7 @@ void Camera::front(){//look at XY plane
 		//recalc
 		afAt = ((mn+mx)/2.0f);//centralize at
 		//define z
-		float delta = max( abs(mx.y-mn.y), abs(mx.x-mn.x))/2.0f;
+		float delta = max( (float)fabs(mx.y-mn.y), (float)fabs(mx.x-mn.x))/2.0f;
 		afEye = afAt;	afEye.z = mx.z + (delta)/tgHalpha;
 		
 		afUp.set(0, 1, 0);

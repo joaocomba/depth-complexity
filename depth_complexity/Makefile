@@ -31,7 +31,7 @@ all : main_joao depthcomplexity2d depthcomplexity3d_offline depthcomplexity3d \
 	  randomdepthcomplexity3d randomdepthcomplexity3d_offline
 
 clean:
-	rm -f *.o depthcomplexity3d depthcomplexity2d main_joao \
+	rm -f *.o camera/*.o depthcomplexity3d depthcomplexity2d main_joao \
 	test_intersection depthcomplexity3d_offline randomdepthcomplexity3d randomdepthcomplexity3d_offline
 	
 hard_clean: clean
