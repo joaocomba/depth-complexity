@@ -21,7 +21,7 @@ do
 	do
 		NAME="$(basename ${m})"
 		echo "Current model is ${NAME}"
-		CURR_DIR=${TEST_DIR}/${NAME}/${TYPE[i]}
+		CURR_DIR=${TEST_DIR}/${NAME}_${TIME_LIMIT}/${TYPE[i]}
 		EXIT=0
 		DSTEPS=3
 		ITH=100
