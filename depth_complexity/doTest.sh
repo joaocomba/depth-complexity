@@ -44,6 +44,7 @@ do
 			fi
 		done
 	done
-	echo "BEST USUAL: ${BEST[0]}" > ${TEST_DIR}/${NAME}/comp.txt
-	echo "BEST RANDOM: ${BEST[1]}" >> ${TEST_DIR}/${NAME}/comp.txt
+	echo "BEST USUAL: ${BEST[0]}" > ${TEST_DIR}/${NAME}_${TIME_LIMIT}/comp.txt
+	echo "BEST RANDOM: ${BEST[1]}" >> ${TEST_DIR}/${NAME}_${TIME_LIMIT}/comp.txt
 done
+
