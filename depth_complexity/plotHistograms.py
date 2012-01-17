@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Usage:
 # this should be called by plotHistograms.sh
 
@@ -5,45 +7,30 @@ import sys
 import os
 import re
 import numpy
+from collections import defaultdict
 
-exec_name = sys.argv[4]
-model = sys.argv[1]
-lower = sys.argv[2]
-upper = sys.argv[3];
+model, lower, upper, exec_name = sys.argv[1:5]
 
 lower = int(lower)
 upper = int(upper)
 
-histogram = dict()
+histogram = defaultdict(lambda: [0] * (upper + 1 - lower))
 
-for i in range(lower,upper+1):
-	os.system(exec_name+" -f "+model+" -dsteps "+str(i)+" -fh histogram.txt")
-	total = 0.0
-	for line in open('histogram.txt', 'r'):
-		found = re.findall(r'\d+',line)
-		if len(found) == 0:
-			continue
-		index = int(found[0])
-		val = numpy.float64(found[1])
-		total += val
-		try:
-			histogram[index].append(val)
-		except:
-			histogram[index] = list()
-			histogram[index].append(val)
-	for k in histogram.keys():
-		histogram[k][len(histogram[k])-1] /= total
+for i in range(lower, upper + 1):
+    os.system('{:s} -f {:s} -dsteps {:d} -fh histogram.txt'.format(exec_name, model, i))
+    total = 0
+    for line in open('histogram.txt'):
+        found = re.findall(r'\d+',line)
+        if found:
+            index = int(found[0])
+            val = numpy.float64(found[1])
+            total += val
+            histogram[index][i-lower] = val
+    for k in histogram:
+        histogram[k][i-lower] /= total
 
-for i in histogram.keys():
-	if len(histogram[i]) < upper-lower+1:
-		for j in range(upper-lower+1-len(histogram[i])):
-			histogram[i].append(0);
+with open('toPlot.txt','w') as f:
+    for k, v in sorted(histogram.items()):
+        f.write('{:d} {:s}\n'.format(k, ' '.join(str(numpy.percentile(v, i / 4.0)) for i in range(5))))
 
-f = open('toPlot.txt','w')
-for i in sorted(histogram.keys()):
-	print >> f, i, numpy.percentile(histogram[i],0.0), numpy.percentile(histogram[i],0.25), numpy.percentile(histogram[i],0.5), numpy.percentile(histogram[i],0.75), numpy.percentile(histogram[i],1.0)
-f.close()
-
-exit(max(histogram.keys()))
-
-
+exit(max(histogram))
