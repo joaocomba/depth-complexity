@@ -46,3 +46,7 @@ given time limit (in seconds).
 Usage:
 >> doTest.sh model_dir time_limit
 
+This generates the folder "Tests". Inside it, there is one folder per model and time limit used (the folders are named "model_time"). Inside the model_time folder are two folders, one for the tests using our approach, and one for the ones using the random approach, besides the "comp.txt" file. Inside those are all the tests made using the respective approach, model and time limit. Each test's results are inside a folder named with the number of discrete steps utilized to run the test. The results include a histogram of all found rays, and .off files with the rays with a high number of intersections.
+The "comp.txt" file states the most intersections found using each approach.
+
+
