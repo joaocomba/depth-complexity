@@ -28,11 +28,12 @@ LDFLAGS = $(ATB_LDFLAGS) $(GLEW_LDFLAGS) -Wall -Werror
 .PHONY: all clean
 
 all : main_joao depthcomplexity2d depthcomplexity3d_offline depthcomplexity3d \
-	  randomdepthcomplexity3d randomdepthcomplexity3d_offline
+	  randomdepthcomplexity3d randomdepthcomplexity3d_offline mergeOFF
 
 clean:
 	rm -f *.o camera/*.o depthcomplexity3d depthcomplexity2d main_joao \
-	test_intersection depthcomplexity3d_offline randomdepthcomplexity3d randomdepthcomplexity3d_offline
+	test_intersection depthcomplexity3d_offline randomdepthcomplexity3d \
+	randomdepthcomplexity3d_offline mergeOFF
 	
 hard_clean: clean
 	rm -f *.off hist*.txt *.svg toPlot.txt
@@ -59,3 +60,5 @@ randomdepthcomplexity3d_offline: dc_3d_random.o flags.o util.o timer.o
 	g++ -g -o $@ depthcomplexity3d_offline.cpp -D "USE_RANDOM_DC3D" $^ \
 	$(LDFLAGS) $(GLFW_LDFLAGS) $(GLUT_LDFLAGS) $(GLEW_CFLAGS)
 
+mergeOFF: mergeOFF.o
+	g++ -g -o $@ $^

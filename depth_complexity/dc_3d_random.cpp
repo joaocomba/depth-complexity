@@ -56,6 +56,7 @@ void RDepthComplexity3D::writeHistogram(std::ostream& out) {
 }
 
 void RDepthComplexity3D::writeRays(std::ostream& out) {
+  out << "OFF" << "\n";
   out << (_maximumRays.size()*2) << " "
       << _maximumRays.size() << " 0\n";
 
@@ -71,6 +72,7 @@ void RDepthComplexity3D::writeRays(std::ostream& out) {
 }
 
 void RDepthComplexity3D::writeRays(std::ostream& out, const std::vector<Segment> & _rays) {
+  out << "OFF" << "\n";
   out << (_rays.size()*2) << " "
       << _rays.size() << " 0\n";
 
