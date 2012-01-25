@@ -59,3 +59,19 @@ into one file.
 Usage:
 >> mergeOFF first_file second_file [output_file]
 
+TEST ANALYZER
+
+Receives a test folder (model_time) and produces histograms
+comparing runs with different number of steps and algorithms.
+If no_key is given, then there should be no key in the plot.
+If only a certain range of discretization steps should be used,
+this can be informed by editing the LIMIT variables inside the
+script.
+The output is in model_time_u.pdf and model_time_r.pdf.
+
+Usage:
+>> analyzeTests.sh model_time [no_key]
+Example:
+>> ./analyzeTests.sh hammer.obj_400 1
+
+
