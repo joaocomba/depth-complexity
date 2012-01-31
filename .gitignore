@@ -4,4 +4,6 @@ hist*.txt
 *.off
 *.svg
 toPlot.txt
+Tests/
+Tests.tar.gz
 

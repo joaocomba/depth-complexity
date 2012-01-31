@@ -1,0 +1,7 @@
+* Check whether .off rays are okay (done).
+* Make plotHistograms.py use previous results (done).
+* Allow change of the color map and size used in the test analyzer (done).
+* Do performance tests (done).
+* Port to windows
+* Parallelize
+

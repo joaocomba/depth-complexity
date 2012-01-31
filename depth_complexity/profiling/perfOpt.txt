@@ -1,0 +1,292 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 78.16     10.30    10.30        6     1.72     2.18  DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&)
+ 12.67     11.97     1.67     5400     0.00     0.00  DepthComplexity2D::findMaxValueInStencil()
+  4.33     12.54     0.57 12352984     0.00     0.00  lineIntersection3D(Segment const&, Segment const&, double*, double*)
+  2.05     12.81     0.27     5400     0.00     0.00  DepthComplexity2D::findDepthComplexity2D()
+  0.87     12.93     0.12  3531938     0.00     0.00  lineIntersection2D(Segment const&, Segment const&, double*, double*)
+  0.53     13.00     0.07  6176492     0.00     0.00  TriMesh::operator=(TriMesh const&)
+  0.38     13.05     0.05                             loadOBJMesh(std::istream&)
+  0.34     13.09     0.05  3088246     0.00     0.00  segmentIntersection2D(Segment const&, Segment const&, double*, double*)
+  0.30     13.13     0.04    54463     0.00     0.00  std::vector<Segment, std::allocator<Segment> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, Segment const&)
+  0.15     13.15     0.02  6176492     0.00     0.00  DepthComplexity2D::computeDualSegmentFromPoint(vec3<double> const&)
+  0.08     13.16     0.01       18     0.00     0.00  std::vector<Triangle, std::allocator<Triangle> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Triangle*, std::vector<Triangle, std::allocator<Triangle> > >, Triangle const&)
+  0.08     13.17     0.01        1     0.01     0.01  DepthComplexity2D::initFBO()
+  0.04     13.18     0.01                             segmentIntersection3D(Segment const&, Segment const&, double*, double*)
+  0.04     13.18     0.01                             operator<(Segment const&, Segment const&)
+  0.00     13.18     0.00     5413     0.00     0.00  DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&)
+  0.00     13.18     0.00     5400     0.00     0.00  DepthComplexity3D::makePlane(vec3<double> const&, vec3<double> const&, vec3<double> const&)
+  0.00     13.18     0.00       34     0.00     0.00  option(char const*, int, char const* const*, double, char const*)
+  0.00     13.18     0.00       30     0.00     0.00  void std::vector<Segment, std::allocator<Segment> >::_M_range_insert<__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > > >(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, std::forward_iterator_tag)
+  0.00     13.18     0.00        8     0.00     0.00  DepthComplexity3D::processMeshPlane(vec4<double> const&, std::vector<Segment, std::allocator<Segment> >*)
+  0.00     13.18     0.00        6     0.00     0.00  std::vector<unsigned long long, std::allocator<unsigned long long> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned long long*, std::vector<unsigned long long, std::allocator<unsigned long long> > >, unsigned long, unsigned long long const&)
+  0.00     13.18     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z6optionPKciPKS0_S0_S0_b
+  0.00     13.18     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN17DepthComplexity2DC2Eii
+  0.00     13.18     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN17DepthComplexity3DC2Eiii
+  0.00     13.18     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZltRK7SegmentS1_
+  0.00     13.18     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
+  0.00     13.18     0.00        1     0.00     0.00  checkFramebufferStatus()
+  0.00     13.18     0.00        1     0.00     0.01  DepthComplexity2D::DepthComplexity2D(int, int)
+  0.00     13.18     0.00        1     0.00     0.00  std::vector<Triangle, std::allocator<Triangle> >::operator=(std::vector<Triangle, std::allocator<Triangle> > const&)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.08% of 13.18 seconds
+
+index % time    self  children    called     name
+               10.30    2.79       6/6           DepthComplexity3D::process(TriMesh const&) [2]
+[1]     99.3   10.30    2.79       6         DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+                0.00    2.68    5400/5413        DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&) [3]
+                0.07    0.00 6176492/6176492     TriMesh::operator=(TriMesh const&) [9]
+                0.04    0.00   54463/54463       std::vector<Segment, std::allocator<Segment> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, Segment const&) [12]
+                0.00    0.00    5400/5400        DepthComplexity3D::makePlane(vec3<double> const&, vec3<double> const&, vec3<double> const&) [27]
+                0.00    0.00      30/30          void std::vector<Segment, std::allocator<Segment> >::_M_range_insert<__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > > >(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, std::forward_iterator_tag) [29]
+                0.00    0.00       6/8           DepthComplexity3D::processMeshPlane(vec4<double> const&, std::vector<Segment, std::allocator<Segment> >*) [30]
+                0.00    0.00       6/6           std::vector<unsigned long long, std::allocator<unsigned long long> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned long long*, std::vector<unsigned long long, std::allocator<unsigned long long> > >, unsigned long, unsigned long long const&) [31]
+-----------------------------------------------
+                                                 <spontaneous>
+[2]     99.3    0.00   13.10                 DepthComplexity3D::process(TriMesh const&) [2]
+               10.30    2.79       6/6           DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+                0.00    0.00       1/8           DepthComplexity3D::processMeshPlane(vec4<double> const&, std::vector<Segment, std::allocator<Segment> >*) [30]
+-----------------------------------------------
+                0.00    0.00       2/5413        option(char const*, int, char const* const*, bool, char const*) [21]
+                0.00    0.00       3/5413        option(char const*, int, char const* const*, char const*, char const*, bool) [20]
+                0.00    0.00       8/5413        option(char const*, int, char const* const*, int, char const*) [19]
+                0.00    2.68    5400/5413        DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+[3]     20.4    0.00    2.69    5413         DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&) [3]
+                0.27    2.42    5400/5400        DepthComplexity2D::findDepthComplexity2D() [4]
+-----------------------------------------------
+                0.27    2.42    5400/5400        DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&) [3]
+[4]     20.4    0.27    2.42    5400         DepthComplexity2D::findDepthComplexity2D() [4]
+                1.67    0.00    5400/5400        DepthComplexity2D::findMaxValueInStencil() [5]
+                0.02    0.57 6176492/6176492     DepthComplexity2D::computeDualSegmentFromPoint(vec3<double> const&) [6]
+                0.12    0.00 3531938/3531938     lineIntersection2D(Segment const&, Segment const&, double*, double*) [8]
+                0.05    0.00 3088246/3088246     segmentIntersection2D(Segment const&, Segment const&, double*, double*) [11]
+-----------------------------------------------
+                1.67    0.00    5400/5400        DepthComplexity2D::findDepthComplexity2D() [4]
+[5]     12.7    1.67    0.00    5400         DepthComplexity2D::findMaxValueInStencil() [5]
+-----------------------------------------------
+                0.02    0.57 6176492/6176492     DepthComplexity2D::findDepthComplexity2D() [4]
+[6]      4.5    0.02    0.57 6176492         DepthComplexity2D::computeDualSegmentFromPoint(vec3<double> const&) [6]
+                0.57    0.00 12352984/12352984     lineIntersection3D(Segment const&, Segment const&, double*, double*) [7]
+-----------------------------------------------
+                0.57    0.00 12352984/12352984     DepthComplexity2D::computeDualSegmentFromPoint(vec3<double> const&) [6]
+[7]      4.3    0.57    0.00 12352984         lineIntersection3D(Segment const&, Segment const&, double*, double*) [7]
+-----------------------------------------------
+                0.12    0.00 3531938/3531938     DepthComplexity2D::findDepthComplexity2D() [4]
+[8]      0.9    0.12    0.00 3531938         lineIntersection2D(Segment const&, Segment const&, double*, double*) [8]
+-----------------------------------------------
+                0.07    0.00 6176492/6176492     DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+[9]      0.5    0.07    0.00 6176492         TriMesh::operator=(TriMesh const&) [9]
+                0.00    0.00       1/1           std::vector<Triangle, std::allocator<Triangle> >::operator=(std::vector<Triangle, std::allocator<Triangle> > const&) [38]
+-----------------------------------------------
+                                                 <spontaneous>
+[10]     0.5    0.05    0.01                 loadOBJMesh(std::istream&) [10]
+                0.01    0.00      18/18          std::vector<Triangle, std::allocator<Triangle> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Triangle*, std::vector<Triangle, std::allocator<Triangle> > >, Triangle const&) [13]
+                0.00    0.00      34/34          option(char const*, int, char const* const*, double, char const*) [28]
+-----------------------------------------------
+                0.05    0.00 3088246/3088246     DepthComplexity2D::findDepthComplexity2D() [4]
+[11]     0.3    0.05    0.00 3088246         segmentIntersection2D(Segment const&, Segment const&, double*, double*) [11]
+-----------------------------------------------
+                0.04    0.00   54463/54463       DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+[12]     0.3    0.04    0.00   54463         std::vector<Segment, std::allocator<Segment> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, Segment const&) [12]
+-----------------------------------------------
+                0.01    0.00      18/18          loadOBJMesh(std::istream&) [10]
+[13]     0.1    0.01    0.00      18         std::vector<Triangle, std::allocator<Triangle> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Triangle*, std::vector<Triangle, std::allocator<Triangle> > >, Triangle const&) [13]
+-----------------------------------------------
+                0.01    0.00       1/1           DepthComplexity2D::DepthComplexity2D(int, int) [15]
+[14]     0.1    0.01    0.00       1         DepthComplexity2D::initFBO() [14]
+                0.00    0.00       1/1           checkFramebufferStatus() [37]
+-----------------------------------------------
+                0.00    0.01       1/1           DepthComplexity3D::DepthComplexity3D(int, int, int) [16]
+[15]     0.1    0.00    0.01       1         DepthComplexity2D::DepthComplexity2D(int, int) [15]
+                0.01    0.00       1/1           DepthComplexity2D::initFBO() [14]
+-----------------------------------------------
+                                                 <spontaneous>
+[16]     0.1    0.00    0.01                 DepthComplexity3D::DepthComplexity3D(int, int, int) [16]
+                0.00    0.01       1/1           DepthComplexity2D::DepthComplexity2D(int, int) [15]
+                0.00    0.00       1/8           DepthComplexity3D::processMeshPlane(vec4<double> const&, std::vector<Segment, std::allocator<Segment> >*) [30]
+-----------------------------------------------
+                                                 <spontaneous>
+[17]     0.0    0.01    0.00                 segmentIntersection3D(Segment const&, Segment const&, double*, double*) [17]
+-----------------------------------------------
+                                                 <spontaneous>
+[18]     0.0    0.01    0.00                 operator<(Segment const&, Segment const&) [18]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.0    0.00    0.00                 option(char const*, int, char const* const*, int, char const*) [19]
+                0.00    0.00       8/5413        DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&) [3]
+-----------------------------------------------
+                                                 <spontaneous>
+[20]     0.0    0.00    0.00                 option(char const*, int, char const* const*, char const*, char const*, bool) [20]
+                0.00    0.00       3/5413        DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&) [3]
+-----------------------------------------------
+                                                 <spontaneous>
+[21]     0.0    0.00    0.00                 option(char const*, int, char const* const*, bool, char const*) [21]
+                0.00    0.00       2/5413        DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&) [3]
+-----------------------------------------------
+                0.00    0.00    5400/5400        DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+[27]     0.0    0.00    0.00    5400         DepthComplexity3D::makePlane(vec3<double> const&, vec3<double> const&, vec3<double> const&) [27]
+-----------------------------------------------
+                0.00    0.00      34/34          loadOBJMesh(std::istream&) [10]
+[28]     0.0    0.00    0.00      34         option(char const*, int, char const* const*, double, char const*) [28]
+-----------------------------------------------
+                0.00    0.00      30/30          DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+[29]     0.0    0.00    0.00      30         void std::vector<Segment, std::allocator<Segment> >::_M_range_insert<__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > > >(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, std::forward_iterator_tag) [29]
+-----------------------------------------------
+                0.00    0.00       1/8           DepthComplexity3D::DepthComplexity3D(int, int, int) [16]
+                0.00    0.00       1/8           DepthComplexity3D::process(TriMesh const&) [2]
+                0.00    0.00       6/8           DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+[30]     0.0    0.00    0.00       8         DepthComplexity3D::processMeshPlane(vec4<double> const&, std::vector<Segment, std::allocator<Segment> >*) [30]
+-----------------------------------------------
+                0.00    0.00       6/6           DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&) [1]
+[31]     0.0    0.00    0.00       6         std::vector<unsigned long long, std::allocator<unsigned long long> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned long long*, std::vector<unsigned long long, std::allocator<unsigned long long> > >, unsigned long, unsigned long long const&) [31]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [73]
+[32]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z6optionPKciPKS0_S0_S0_b [32]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [73]
+[33]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN17DepthComplexity2DC2Eii [33]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [73]
+[34]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN17DepthComplexity3DC2Eiii [34]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [73]
+[35]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZltRK7SegmentS1_ [35]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [73]
+[36]     0.0    0.00    0.00       1         _GLOBAL__sub_I_main [36]
+-----------------------------------------------
+                0.00    0.00       1/1           DepthComplexity2D::initFBO() [14]
+[37]     0.0    0.00    0.00       1         checkFramebufferStatus() [37]
+-----------------------------------------------
+                0.00    0.00       1/1           TriMesh::operator=(TriMesh const&) [9]
+[38]     0.0    0.00    0.00       1         std::vector<Triangle, std::allocator<Triangle> >::operator=(std::vector<Triangle, std::allocator<Triangle> > const&) [38]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Index by function name
+
+  [32] _GLOBAL__sub_I__Z6optionPKciPKS0_S0_S0_b (flags.cpp) [37] checkFramebufferStatus() [27] DepthComplexity3D::makePlane(vec3<double> const&, vec3<double> const&, vec3<double> const&)
+  [33] _GLOBAL__sub_I__ZN17DepthComplexity2DC2Eii (dc_2d.cpp) [28] option(char const*, int, char const* const*, double, char const*) [9] TriMesh::operator=(TriMesh const&)
+  [34] _GLOBAL__sub_I__ZN17DepthComplexity3DC2Eiii (dc_3d.cpp) [4] DepthComplexity2D::findDepthComplexity2D() [12] std::vector<Segment, std::allocator<Segment> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, Segment const&)
+  [35] _GLOBAL__sub_I__ZltRK7SegmentS1_ (util.cpp) [5] DepthComplexity2D::findMaxValueInStencil() [29] void std::vector<Segment, std::allocator<Segment> >::_M_range_insert<__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > > >(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, __gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, std::forward_iterator_tag)
+  [36] _GLOBAL__sub_I_main (depthcomplexity3d_offline.cpp) [6] DepthComplexity2D::computeDualSegmentFromPoint(vec3<double> const&) [13] std::vector<Triangle, std::allocator<Triangle> >::_M_insert_aux(__gnu_cxx::__normal_iterator<Triangle*, std::vector<Triangle, std::allocator<Triangle> > >, Triangle const&)
+  [10] loadOBJMesh(std::istream&) [14] DepthComplexity2D::initFBO() [38] std::vector<Triangle, std::allocator<Triangle> >::operator=(std::vector<Triangle, std::allocator<Triangle> > const&)
+   [8] lineIntersection2D(Segment const&, Segment const&, double*, double*) [3] DepthComplexity2D::process(Segment const&, Segment const&, std::vector<Segment, std::allocator<Segment> > const&) [31] std::vector<unsigned long long, std::allocator<unsigned long long> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned long long*, std::vector<unsigned long long, std::allocator<unsigned long long> > >, unsigned long, unsigned long long const&)
+   [7] lineIntersection3D(Segment const&, Segment const&, double*, double*) [15] DepthComplexity2D::DepthComplexity2D(int, int) [18] operator<(Segment const&, Segment const&)
+  [11] segmentIntersection2D(Segment const&, Segment const&, double*, double*) [1] DepthComplexity3D::processMeshAlign(DepthComplexity3D::PlaneAlign const&, DepthComplexity3D::PlaneAlign const&)
+  [17] segmentIntersection3D(Segment const&, Segment const&, double*, double*) [30] DepthComplexity3D::processMeshPlane(vec4<double> const&, std::vector<Segment, std::allocator<Segment> >*)

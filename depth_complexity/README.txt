@@ -29,6 +29,14 @@ Save intersection segments with 7 intersections or more,
 one set of segments per number of intersections:
 >> ./depthcomplexity3d_offline -h -cmr true -it 7
 
+ABOUT TESTS FOLDER
+
+Before using or creating results, beware that the current results are
+available in:
+vgchead.poly.edu:/home/vgc/share/scratch/depth-complexity/Tests.tar.gz
+and should be extracted into depth-complexity/ (creating the folder
+Tests) for use.
+
 HISTOGRAM PLOTTER:
 
 Generates histograms with maximum, mean and minimum number
@@ -67,6 +75,8 @@ If no_key is given, then there should be no key in the plot.
 If only a certain range of discretization steps should be used,
 this can be informed by editing the LIMIT variables inside the
 script.
+The scale of colors can be defined within the script, as well
+as the size of the plot.
 The output is in model_time_u.pdf and model_time_r.pdf.
 
 Usage:
