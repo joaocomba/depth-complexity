@@ -84,4 +84,17 @@ Usage:
 Example:
 >> ./analyzeTests.sh hammer.obj_400 1
 
+MDC vs DISCRETIZATION STEPS Plotter
+
+Receives a test folder (model_time) and produces a plot of MDC
+vs discretization steps. If only a certain range of discretization
+steps should be used, this can be informed by editing the LIMIT
+variables inside the script. The output is in model_time_u.pdf
+and model_time_r.pdf.
+
+Usage:
+>> MDCvsDisc.sh model_time
+Example:
+>> ./MDCvsDisc.sh hammer.obj_800
+
 
