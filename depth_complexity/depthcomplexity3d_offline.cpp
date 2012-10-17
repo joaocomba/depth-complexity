@@ -37,8 +37,10 @@ int main (int argc, char **argv) {
   const int fboHeight = cmd_option("-fboHeight", 512, "Framebuffer height.");
   const int discretSteps = cmd_option("-dsteps", 10, "Discrete steps.");
   const char *filenameHistogram = cmd_option("-fh", "", "Save a *.txt file with histogram information");
-  const char *filenameRays = cmd_option("-fr", "", "Save a *.off file with rays in ");
-  const bool computeMoreRays = cmd_option("-cmr", false, "Whether rays above the threshold of intersections should be output");
+  const char *filenameRaysSpherical = cmd_option("-frs", "", "Save a *.txt file with rays in spherical coordinates");
+  const int sphericalThreshold = cmd_option("-k",  0, "Spherical coordinates are calculated for rays with DC between MDC-k and MDC");
+  const char *filenameRays = cmd_option("-fr", "", "Save a *.off file with rays");
+  const bool computeMoreRays = cmd_option("-cmr", strcmp(filenameRaysSpherical, "")!=0, "Whether rays above the threshold of intersections should be output");
   const int intersectionThreshold  = cmd_option("-it",  0, "Threshold of intersections");
 
   try {
@@ -110,6 +112,16 @@ int main (int argc, char **argv) {
         dc3d.writeRays(fileRays,dc3d.goodRays(i));
         fileRays.close();
       }
+    }
+     
+    // Saving RaysSpherical file
+    if (strcmp(filenameRaysSpherical, "")!=0) {
+      std::string extTxt = getExtension(filenameRaysSpherical);
+      if (extTxt == "txt" || extTxt == "TXT") {
+        std::ofstream fileRaysSpherical(filenameRaysSpherical);
+        dc3d.writeRaysSpherical(fileRaysSpherical,sphericalThreshold);
+        fileRaysSpherical.close();
+      } else throw "Spherical Rays' file should be *.txt!";
     }
       
   } catch (const char* msg)  {

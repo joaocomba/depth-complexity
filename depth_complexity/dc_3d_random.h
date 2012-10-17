@@ -38,6 +38,7 @@ public:
   void writeHistogram(std::ostream& out);
   void writeRays(std::ostream& out);
   void writeRays(std::ostream& out, const std::vector<Segment> & _rays);
+  void writeRaysSpherical(std::ostream& out, int k);
 
 private:
   enum PlaneAlign{

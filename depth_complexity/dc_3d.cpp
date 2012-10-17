@@ -91,6 +91,31 @@ void DepthComplexity3D::writeRays(std::ostream& out, const std::vector<Segment> 
     out << "2 " << i << " " << (i+1) << "\n";
 }
 
+void DepthComplexity3D::writeRaysSpherical(std::ostream& out, int k) {
+  assert(_computeGoodRays);
+  long long unsigned int total = 0;
+  for(int i = 0 ; i <= k ; ++i) {
+    const std::vector<Segment> & _rays = goodRays(maximum()-i);
+    total += _rays.size();
+  }
+  out << total << "\n";
+
+  for(int i = 0 ; i <= k ; ++i) {
+    const std::vector<Segment> & _rays = goodRays(maximum()-i);
+    std::vector<Segment>::const_iterator ite = _rays.begin();
+    std::vector<Segment>::const_iterator end = _rays.end();
+    for (; ite != end; ++ite) {
+      double a, b, c, d;
+      double x1 = ite->a.x, x2 = ite->b.x, y1 = ite->a.y, y2 = ite->b.y, z1 = ite->a.z, z2 = ite->b.z;
+      a = atan2(y1, x1);
+      b = atan2(z1, sqrt(x1*x1 + y1*y1));
+      c = atan2(y2, x2);
+      d = atan2(z2, sqrt(x2*x2 + y2*y2));
+      out << a << " " << b << " " << c << " " << d << " " << maximum()-i << "\n";
+    }
+  }
+}
+
 void DepthComplexity3D::process(const TriMesh &mesh) {
   this->_mesh = &mesh;
 
