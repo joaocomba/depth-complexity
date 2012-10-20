@@ -100,6 +100,7 @@ void DepthComplexity3D::writeRaysSpherical(std::ostream& out, int k) {
   }
   out << total << "\n";
 
+/* Simple spherical coordinates
   for(int i = 0 ; i <= k ; ++i) {
     const std::vector<Segment> & _rays = goodRays(maximum()-i);
     std::vector<Segment>::const_iterator ite = _rays.begin();
@@ -112,6 +113,27 @@ void DepthComplexity3D::writeRaysSpherical(std::ostream& out, int k) {
       c = atan2(y2, x2);
       d = atan2(z2, sqrt(x2*x2 + y2*y2));
       out << a << " " << b << " " << c << " " << d << " " << maximum()-i << "\n";
+    }
+  }
+*/
+
+  BoundingBox aabb = _mesh->aabb;
+  Sphere sph;
+  sph.center = aabb.center();
+  sph.radius = aabb.extents().length()/2;
+
+// Coordinates of intersection with bounding sphere
+  for(int i = 0 ; i <= k ; ++i) {
+    const std::vector<Segment> & _rays = goodRays(maximum()-i);
+    std::vector<Segment>::const_iterator ite = _rays.begin();
+    std::vector<Segment>::const_iterator end = _rays.end();
+    for (; ite != end; ++ite) {
+      vec3d f, s;
+      if(!segmentSphereIntersection3D(*ite,sph,f,s))
+      	continue;
+      f = cartesianToSpherical(f);
+      s = cartesianToSpherical(s);
+      out << f.y << " " << f.z << " " << s.y << " " << s.z << " " << maximum()-i << "\n";
     }
   }
 }

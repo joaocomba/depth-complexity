@@ -232,3 +232,40 @@ bool segmentIntersection2D(const Segment &seg1, const Segment &seg2, double *t1,
     return true;
   return false;
 }
+
+bool segmentSphereIntersection3D(const Segment &seg, const Sphere sph, vec3d & out0, vec3d & out1) {
+  vec3d o = seg.a;
+  vec3d d = seg.b - seg.a;
+  vec3d c = sph.center;
+  double r = sph.radius;
+  
+  double A = dot(d,d);
+  double B = 2 * dot((o-c),d);
+  double C = dot(o-c,o-c) - r*r;
+  
+  double delta = B*B - 4*A*C;
+  
+  if(delta <= 0)
+  	return false;
+  	
+  double q = (-B - sqrt(delta))/2.;
+  if(B < 0)
+    q += sqrt(delta);
+    
+  double t0 = q/A;
+  double t1 = C/q;
+  
+  out0 = o + t0 * d;
+  out1 = o + t1 * d;
+  return true;
+}
+
+vec3d cartesianToSpherical(vec3d point) {
+	vec3d ans;
+	double a = point.x, b = point.y, c = point.z;
+	ans.x = sqrt(a*a + b*b + c*c);
+	ans.y = acos(c/ans.x);
+	ans.z = atan2(b,a);
+	return ans;
+}
+
