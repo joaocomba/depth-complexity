@@ -125,8 +125,7 @@ void RDepthComplexity3D::writeRaysSpherical(std::ostream& out, int k) {
     std::vector<Segment>::const_iterator end = _rays.end();
     for (; ite != end; ++ite) {
       vec3d f, s;
-      if(!segmentSphereIntersection3D(*ite,sph,f,s))
-      	continue;
+      assert(segmentSphereIntersection3D(*ite,sph,f,s));
       f = cartesianToSpherical(f);
       s = cartesianToSpherical(s);
       out << f.y << " " << f.z << " " << s.y << " " << s.z << " " << maximum()-i << "\n";
